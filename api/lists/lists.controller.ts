@@ -1,4 +1,5 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { CustomRequest } from '../../custom.d';
 import { List } from './lists.interface';
 import {
   getAllLists,
@@ -8,13 +9,6 @@ import {
   updateList,
   deleteList,
 } from './lists.service';
-
-interface CustomRequest extends Request {
-    user: {
-        _id: string,
-        email: string,
-    }
-}
 
 export async function handlerGetAllLists(req: CustomRequest, res: Response) {
   try {
@@ -27,6 +21,7 @@ export async function handlerGetAllLists(req: CustomRequest, res: Response) {
 
 export async function handlerGetListById(req: CustomRequest, res: Response) {
   try {
+    if (!req.user) { throw Error('Unauthorized'); }
     const { _id } = req.user;
     const list: List = await getListById(req.params.id);
     if (list.refUser.toString() === _id.toString()) {
@@ -41,6 +36,7 @@ export async function handlerGetListById(req: CustomRequest, res: Response) {
 
 export async function handlerGetListByUserId(req: CustomRequest, res: Response) {
   try {
+    if (!req.user) { throw Error('Unauthorized'); }
     const { _id } = req.user;
     const lists: List[] = await getListByUserId(_id);
     res.status(200).json(lists);
@@ -51,6 +47,7 @@ export async function handlerGetListByUserId(req: CustomRequest, res: Response) 
 
 export async function handlerCreateList(req: CustomRequest, res: Response) {
   try {
+    if (!req.user) { throw Error('Unauthorized'); }
     const { _id } = req.user;
     const newList: List = await createList({ refUser: _id, ...req.body });
     res.status(201).json(newList);
@@ -61,6 +58,7 @@ export async function handlerCreateList(req: CustomRequest, res: Response) {
 
 export async function handlerUpdateList(req: CustomRequest, res: Response) {
   try {
+    if (!req.user) { throw Error('Unauthorized'); }
     const { _id } = req.user;
     const list: List = await getListById(req.params.id);
     if (list.refUser.toString() === _id.toString()) {
@@ -76,6 +74,7 @@ export async function handlerUpdateList(req: CustomRequest, res: Response) {
 
 export async function handlerAddFavsToList(req: CustomRequest, res: Response) {
   try {
+    if (!req.user) { throw Error('Unauthorized'); }
     const { _id } = req.user;
     const list: List = await getListById(req.params.id);
     if (list.refUser.toString() === _id.toString()) {
@@ -92,6 +91,7 @@ export async function handlerAddFavsToList(req: CustomRequest, res: Response) {
 
 export async function handlerDeleteList(req: CustomRequest, res: Response) {
   try {
+    if (!req.user) { throw Error('Unauthorized'); }
     const { _id } = req.user;
     const list: List = await getListById(req.params.id);
     if (list.refUser.toString() === _id.toString()) {

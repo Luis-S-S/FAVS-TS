@@ -9,9 +9,9 @@ import {
 
 const router = Router();
 
-// const { isAuthenticated } = require('../../auth/auth.service');
+const { isAuthenticated } = require('../../auth/auth.service');
 
-router.get('/', handlerGetAllUsers); // isAuthenticated(),
+router.get('/', isAuthenticated(), handlerGetAllUsers); //
 router.get('/:id', handlerGetUserById);
 router.post('/', handlerCreateUser);
 router.patch('/:id', handlerUpdateUser);
