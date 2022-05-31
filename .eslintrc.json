@@ -22,7 +22,6 @@
         }
     },
     "rules": {
-        "no-console": "off",
         "import/extensions": [
             "error",
             "ignorePackages",
@@ -32,6 +31,8 @@
                 "ts": "never",
                 "tsx": "never"
             }
-        ]
+        ],
+        "no-return-await": "off",
+        "no-underscore-dangle": "off"
     }
 }
