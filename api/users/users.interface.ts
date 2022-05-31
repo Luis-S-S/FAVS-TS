@@ -1,10 +1,10 @@
-import mongoose from 'mongoose';
+import { ObjectId } from 'mongoose';
 
 export interface User {
-    _id: mongoose.Types.ObjectId;
+    _id: ObjectId;
     email: string;
     password: string;
-    lists: mongoose.Types.ObjectId[];
+    lists: ObjectId[];
 }
 
 export interface CreateUser {
@@ -15,5 +15,5 @@ export interface CreateUser {
 export interface UpdateUser {
     email?: string;
     password?: string;
-    lists?: mongoose.Types.ObjectId[];
+    lists?: ObjectId[];
 }

@@ -1,8 +1,9 @@
-/* eslint-disable func-names, no-return-await */
+/* eslint-disable func-names, no-return-await, max-len */
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import { User } from './users.interface';
 
-const UsersSchema = new mongoose.Schema({
+const UsersSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any>, {}, {}> = new mongoose.Schema({
   email: {
     type: String,
     required: true,
@@ -21,10 +22,10 @@ const UsersSchema = new mongoose.Schema({
 }, { versionKey: false });
 
 UsersSchema.pre('save', async function (next) {
-  const user = this;
+  const user: User = this;
   try {
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(user.password, salt);
+    const salt: string = await bcrypt.genSalt(10);
+    const hash: string = await bcrypt.hash(user.password, salt);
 
     user.password = hash;
     next();
@@ -40,8 +41,8 @@ UsersSchema.pre('findOneAndUpdate', async function (next) {
   const query: Query = this;
   try {
     if (query._update.password) {
-      const salt = await bcrypt.genSalt(10);
-      const hash = await bcrypt.hash(query._update.password, salt);
+      const salt: string = await bcrypt.genSalt(10);
+      const hash: string = await bcrypt.hash(query._update.password, salt);
       query._update.password = hash;
     }
     next();
