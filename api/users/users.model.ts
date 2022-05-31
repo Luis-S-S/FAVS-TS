@@ -34,7 +34,10 @@ UsersSchema.pre('save', async function (next) {
 });
 
 UsersSchema.pre('findOneAndUpdate', async function (next) {
-  const query = this;
+  interface Query extends mongoose.Query<any, any, {}, any> {
+    _update?: any;
+  }
+  const query: Query = this;
   try {
     if (query._update.password) {
       const salt = await bcrypt.genSalt(10);
